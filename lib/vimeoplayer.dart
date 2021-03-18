@@ -208,7 +208,6 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   // Draw the player elements
   @override
   Widget build(BuildContext context) {
-
     videoWidth = MediaQuery.of(context).size.width;
 
     return Center(
@@ -224,14 +223,6 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     double delta = MediaQuery.of(context).size.width -
                         MediaQuery.of(context).size.height *
                             _controller.value.aspectRatio;
-                    print(
-                        "MediaQuery.of(context).size.width ${MediaQuery.of(context).size.width}");
-                    print(
-                        "MediaQuery.of(context).size.height ${MediaQuery.of(context).size.height}");
-                    print(
-                        "_controller.value.aspectRatio ${_controller.value.aspectRatio}");
-                    print("delta $delta");
-
                     //Рассчет ширины и высоты видео плеера относительно сторон
                     // и ориентации устройства
                     if (MediaQuery.of(context).orientation ==
@@ -244,12 +235,10 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         // In this case adjust videoMargin
                         videoHeight = widget.availableVideoHeight;
                         videoWidth = videoWidth * _controller.value.aspectRatio;
-                        print("videoWidth $videoWidth");
                         videoMargin = 0;
                       } else {
                         videoMargin = 0;
                       }
-
                     } else {
                       videoHeight = MediaQuery.of(context).size.height;
                       videoWidth = videoHeight * _controller.value.aspectRatio;
@@ -309,11 +298,12 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
             },
           ),
           Container(
+            color: Colors.red,
             width: videoWidth,
             child: Row(
               children: [
                 GestureDetector(
-                  //======= Перемотка назад =======//
+                    //======= Перемотка назад =======//
                     child: Container(
                       width: videoWidth * 0.3,
                       height: doubleTapLHeight,
@@ -342,7 +332,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds: _controller.value.position.inSeconds - 10));
+                            seconds:
+                                _controller.value.position.inSeconds - 10));
                       });
                     }),
                 Spacer(flex: 1),
@@ -376,7 +367,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds: _controller.value.position.inSeconds + 10));
+                            seconds:
+                                _controller.value.position.inSeconds + 10));
                       });
                     }),
               ],
@@ -453,17 +445,17 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       bottom: videoHeight / 2 - 30,
                     ),
                     icon:
-                    _controller.value.position == _controller.value.duration
-                        ? Icon(
-                      Icons.replay,
-                      color: widget.controlsColor,
-                      size: 60.0,
-                    )
-                        : _controller.value.isPlaying
-                        ? Icon(Icons.pause,
-                        size: 60.0, color: widget.controlsColor)
-                        : Icon(Icons.play_arrow,
-                        size: 60.0, color: widget.controlsColor),
+                        _controller.value.position == _controller.value.duration
+                            ? Icon(
+                                Icons.replay,
+                                color: widget.controlsColor,
+                                size: 60.0,
+                              )
+                            : _controller.value.isPlaying
+                                ? Icon(Icons.pause,
+                                    size: 60.0, color: widget.controlsColor)
+                                : Icon(Icons.play_arrow,
+                                    size: 60.0, color: widget.controlsColor),
                     onPressed: () {
                       setState(() {
                         //replay video
@@ -487,15 +479,13 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               //),
               Container(
-                alignment: Alignment.centerRight,
                 margin: EdgeInsets.only(
                   top: videoHeight - 70, /*left: videoWidth + videoMargin - 50*/
                 ),
                 child: IconButton(
                     alignment: AlignmentDirectional.center,
                     icon: Icon(Icons.fullscreen, size: 30.0),
-                    onPressed: () async
-                    {
+                    onPressed: () async {
                       final playing = _controller.value.isPlaying;
                       setState(() {
                         _controller.pause();
@@ -506,37 +496,29 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       // return back. Until we returned from
                       // fullscreen - the program is pending
                       final controllerDetails =
-                      await Navigator.push<ControllerDetails>(
-                          context,
-                          PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder: (BuildContext context, _, __) =>
-                                  FullscreenPlayer(
-                                    id: _id,
-                                    autoPlay: playing,
-                                    controller: _controller,
-                                    position: _controller
-                                        .value.position.inSeconds,
-                                    initFuture: initFuture,
-                                    qualityValue: _qualityValue,
-                                    backgroundColor:
-                                    widget.fullScreenBackgroundColor,
-                                    overlayTimeOut: widget.overlayTimeOut,
-                                    controlsColor: widget.controlsColor,
-                                    qualityValues: _qualityValues,
-                                    qualityKey:
-                                    _currentResolutionQualityKey,
-                                  ),
-                              transitionsBuilder: (___,
-                                  Animation<double> animation,
-                                  ____,
-                                  Widget child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: ScaleTransition(
-                                      scale: animation, child: child),
-                                );
-                              }));
+                          await Navigator.push<ControllerDetails>(
+                              context,
+                              PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder: (BuildContext context, _, __) =>
+                                      FullscreenPlayer(
+                                          id: _id,
+                                          autoPlay: true,
+                                          controller: _controller,
+                                          position: _controller
+                                              .value.position.inSeconds,
+                                          initFuture: initFuture,
+                                          qualityValue: _qualityValue),
+                                  transitionsBuilder: (___,
+                                      Animation<double> animation,
+                                      ____,
+                                      Widget child) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: ScaleTransition(
+                                          scale: animation, child: child),
+                                    );
+                                  }));
                       position = controllerDetails?.position;
                       if (controllerDetails?.playingStatus ?? false) {
                         setState(() {
@@ -547,9 +529,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     }),
               ),
               Container(
-                alignment: Alignment.centerRight,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                // margin: EdgeInsets.only(left: videoWidth + videoMargin - 48),
                 child: IconButton(
                     icon: Icon(Icons.settings, size: 26.0),
                     onPressed: () {

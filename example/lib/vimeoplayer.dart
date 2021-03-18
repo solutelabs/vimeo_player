@@ -16,7 +16,6 @@ class VimeoPlayer extends StatefulWidget {
   final double availableVideoWidth;
   final double availableVideoHeight;
 
-
   VimeoPlayer({
     @required this.id,
     this.autoPlay,
@@ -100,6 +99,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   @override
   Widget build(BuildContext context) {
     videoWidth = MediaQuery.of(context).size.width;
+
     return Center(
         child: Stack(
       alignment: AlignmentDirectional.center,
@@ -113,14 +113,6 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                   double delta = MediaQuery.of(context).size.width -
                       MediaQuery.of(context).size.height *
                           _controller.value.aspectRatio;
-                  print(
-                      "MediaQuery.of(context).size.width ${MediaQuery.of(context).size.width}");
-                  print(
-                      "MediaQuery.of(context).size.height ${MediaQuery.of(context).size.height}");
-                  print(
-                      "_controller.value.aspectRatio ${_controller.value.aspectRatio}");
-                  print("delta $delta");
-
                   //Рассчет ширины и высоты видео плеера относительно сторон
                   // и ориентации устройства
                   if (MediaQuery.of(context).orientation ==
@@ -128,20 +120,15 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       delta < 0) {
                     videoHeight = MediaQuery.of(context).size.width /
                         _controller.value.aspectRatio;
-                    // videoWidth = MediaQuery.of(context).size.width;
-
                     double diff = widget.availableVideoHeight - videoHeight;
                     if (diff < 0.0) {
                       // In this case adjust videoMargin
                       videoHeight = widget.availableVideoHeight;
                       videoWidth = videoWidth * _controller.value.aspectRatio;
-                      print("videoWidth $videoWidth");
                       videoMargin = 0;
                     } else {
                       videoMargin = 0;
                     }
-
-                    print("diff $diff");
                   } else {
                     videoHeight = MediaQuery.of(context).size.height;
                     videoWidth = videoHeight * _controller.value.aspectRatio;
@@ -202,9 +189,10 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
         ),
         Container(
           width: videoWidth,
+          height: videoWidth * 0.3,
           child: Row(
             children: [
-              GestureDetector(
+              InkWell(
                   //======= Перемотка назад =======//
                   child: Container(
                     width: videoWidth * 0.3,
@@ -212,7 +200,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(),
                   ),
-
+                  enableFeedback: true,
+                  splashColor: Colors.white12,
                   // Изменение размера блоков дабл тапа. Нужно для открытия кнопок
                   // "Во весь экран" и "Качество" при включенном overlay
                   onTap: () {
@@ -238,13 +227,13 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     });
                   }),
               Spacer(flex: 1),
-              GestureDetector(
+              InkWell(
+                  enableFeedback: true,
+                  splashColor: Colors.white12,
                   child: Container(
                     //======= Перемотка вперед =======//
                     width: videoWidth * 0.3,
                     height: videoHeight,
-                    // margin: EdgeInsets.fromLTRB(doubleTapRWidth / 2 + 45,
-                    //     doubleTapRMargin, 0, doubleTapRMargin + 20),
                     decoration: BoxDecoration(),
                   ),
                   // Изменение размера блоков дабл тапа. Нужно для открытия кнопок
@@ -325,7 +314,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         end: Alignment.centerLeft,
                         colors: [
                           const Color(0x662F2C47),
-                          const Color(0x662F2C47)
+                          const Color(0x662F2C47),
                         ],
                       ),
                     ),
@@ -395,21 +384,15 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       });
                     }),
               ),
-              // Container(
-              //   margin: EdgeInsets.only(left: videoWidth + videoMargin - 48),
-              //   child: IconButton(
-              //       icon: Icon(Icons.settings, size: 26.0),
-              //       onPressed: () {
-              //         position = _controller.value.position.inSeconds;
-              //         _seek = true;
-              //         _settingModalBottomSheet(context);
-              //         setState(() {});
-              //       }),
-              // ),
+              Container(
+                //===== Ползунок =====//
+                margin: EdgeInsets.only(
+                    top: videoHeight - 26, left: videoMargin), //CHECK IT
+                child: _videoOverlaySlider(),
+              ),
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                // margin: EdgeInsets.only(left: videoWidth + videoMargin - 48),
                 child: IconButton(
                     icon: Icon(Icons.settings, size: 26.0),
                     onPressed: () {
@@ -418,12 +401,6 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       _settingModalBottomSheet(context);
                       setState(() {});
                     }),
-              ),
-              Container(
-                //===== Ползунок =====//
-                margin: EdgeInsets.only(
-                    top: videoHeight - 26, left: videoMargin), //CHECK IT
-                child: _videoOverlaySlider(),
               )
             ],
           )
