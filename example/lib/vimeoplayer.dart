@@ -16,6 +16,7 @@ class VimeoPlayer extends StatefulWidget {
   final double availableVideoWidth;
   final double availableVideoHeight;
 
+
   VimeoPlayer({
     @required this.id,
     this.autoPlay,
