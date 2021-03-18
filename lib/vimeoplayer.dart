@@ -478,9 +478,9 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               //),
               Container(
-                margin: EdgeInsets.only(
-                  top: videoHeight - 70, /*left: videoWidth + videoMargin - 50*/
-                ),
+                alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
                     alignment: AlignmentDirectional.center,
                     icon: Icon(Icons.fullscreen, size: 30.0),
@@ -494,40 +494,38 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       // transfer data to the player and return the position when
                       // return back. Until we returned from
                       // fullscreen - the program is pending
-                      final controllerDetails =
-                          await Navigator.push<ControllerDetails>(
-                              context,
-                              PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (BuildContext context, _, __) =>
-                                      FullscreenPlayer(
-                                          id: _id,
-                                          autoPlay: true,
-                                          controller: _controller,
-                                          position: _controller
-                                              .value.position.inSeconds,
-                                          initFuture: initFuture,
-                                          qualityValue: _qualityValue),
-                                  transitionsBuilder: (___,
-                                      Animation<double> animation,
-                                      ____,
-                                      Widget child) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: ScaleTransition(
-                                          scale: animation, child: child),
-                                    );
-                                  }));
-                      position = controllerDetails?.position;
-                      if (controllerDetails?.playingStatus ?? false) {
-                        setState(() {
-                          _controller.play();
-                          _seek = true;
-                        });
-                      }
+                      position = await Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) =>
+                                  FullscreenPlayer(
+                                      id: _id,
+                                      autoPlay: true,
+                                      controller: _controller,
+                                      position:
+                                      _controller.value.position.inSeconds,
+                                      initFuture: initFuture,
+                                      qualityValue: _qualityValue),
+                              transitionsBuilder: (___,
+                                  Animation<double> animation,
+                                  ____,
+                                  Widget child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                      scale: animation, child: child),
+                                );
+                              }));
+                      setState(() {
+                        _controller.play();
+                        _seek = true;
+                      });
                     }),
               ),
               Container(
+                alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
                     icon: Icon(Icons.settings, size: 26.0),

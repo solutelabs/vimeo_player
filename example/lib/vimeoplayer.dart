@@ -341,9 +341,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               Container(
                 alignment: Alignment.centerRight,
-                margin: EdgeInsets.only(
-                  top: videoHeight - 70, /*left: videoWidth + videoMargin - 50*/
-                ),
+                width: MediaQuery.of(context).size.width,
                 child: IconButton(
                     alignment: AlignmentDirectional.center,
                     icon: Icon(Icons.fullscreen, size: 30.0),
@@ -392,6 +390,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               Container(
                 alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
                     icon: Icon(Icons.settings, size: 26.0),
