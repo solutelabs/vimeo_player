@@ -239,19 +239,16 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         delta < 0) {
                       videoHeight = MediaQuery.of(context).size.width /
                           _controller.value.aspectRatio;
-                      setState(() {
-
-                        double diff = widget.availableVideoHeight - videoHeight;
-                        if (diff < 0.0) {
-                          // In this case adjust videoMargin
-                          videoHeight = widget.availableVideoHeight;
-                          videoWidth = videoWidth * _controller.value.aspectRatio;
-                          print("videoWidth $videoWidth");
-                          videoMargin = 0;
-                        } else {
-                          videoMargin = 0;
-                        }
-                      });
+                      double diff = widget.availableVideoHeight - videoHeight;
+                      if (diff < 0.0) {
+                        // In this case adjust videoMargin
+                        videoHeight = widget.availableVideoHeight;
+                        videoWidth = videoWidth * _controller.value.aspectRatio;
+                        print("videoWidth $videoWidth");
+                        videoMargin = 0;
+                      } else {
+                        videoMargin = 0;
+                      }
 
                     } else {
                       videoHeight = MediaQuery.of(context).size.height;
