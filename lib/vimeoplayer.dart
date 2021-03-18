@@ -208,6 +208,9 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   // Draw the player elements
   @override
   Widget build(BuildContext context) {
+
+    videoWidth = MediaQuery.of(context).size.width;
+
     return Center(
       child: Stack(
         alignment: AlignmentDirectional.center,
@@ -237,7 +240,6 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       videoHeight = MediaQuery.of(context).size.width /
                           _controller.value.aspectRatio;
                       setState(() {
-                        videoWidth = MediaQuery.of(context).size.width;
 
                         double diff = widget.availableVideoHeight - videoHeight;
                         if (diff < 0.0) {
