@@ -51,12 +51,14 @@ class VimeoPlayer extends StatefulWidget {
     this.availableVideoHeight,
     int overlayTimeOut = 0,
     Key key,
-  })  : this.overlayTimeOut = max(overlayTimeOut, 5),
+  })
+      : this.overlayTimeOut = max(overlayTimeOut, 5),
         super(key: key);
 
   @override
-  _VimeoPlayerState createState() => _VimeoPlayerState(
-      id, autoPlay, looping, position, autoPlay ? commencingOverlay : true);
+  _VimeoPlayerState createState() =>
+      _VimeoPlayerState(
+          id, autoPlay, looping, position, autoPlay ? commencingOverlay : true);
 }
 
 class _VimeoPlayerState extends State<VimeoPlayer> {
@@ -67,8 +69,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   bool fullScreen = false;
   int position;
 
-  _VimeoPlayerState(
-      this._id, this.autoPlay, this.looping, this.position, this._overlay)
+  _VimeoPlayerState(this._id, this.autoPlay, this.looping, this.position,
+      this._overlay)
       : initialOverlay = _overlay;
 
   //Custom controller
@@ -208,7 +210,10 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   // Draw the player elements
   @override
   Widget build(BuildContext context) {
-    videoWidth = MediaQuery.of(context).size.width;
+    videoWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Center(
       child: Stack(
@@ -220,15 +225,26 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     //Управление шириной и высотой видео
-                    double delta = MediaQuery.of(context).size.width -
-                        MediaQuery.of(context).size.height *
+                    double delta = MediaQuery
+                        .of(context)
+                        .size
+                        .width -
+                        MediaQuery
+                            .of(context)
+                            .size
+                            .height *
                             _controller.value.aspectRatio;
                     //Рассчет ширины и высоты видео плеера относительно сторон
                     // и ориентации устройства
-                    if (MediaQuery.of(context).orientation ==
-                            Orientation.portrait ||
+                    if (MediaQuery
+                        .of(context)
+                        .orientation ==
+                        Orientation.portrait ||
                         delta < 0) {
-                      videoHeight = MediaQuery.of(context).size.width /
+                      videoHeight = MediaQuery
+                          .of(context)
+                          .size
+                          .width /
                           _controller.value.aspectRatio;
                       double diff = widget.availableVideoHeight - videoHeight;
                       if (diff < 0.0) {
@@ -240,10 +256,16 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         videoMargin = 0;
                       }
                     } else {
-                      videoHeight = MediaQuery.of(context).size.height;
+                      videoHeight = MediaQuery
+                          .of(context)
+                          .size
+                          .height;
                       videoWidth = videoHeight * _controller.value.aspectRatio;
                       videoMargin =
-                          (MediaQuery.of(context).size.width - videoWidth) / 2;
+                          (MediaQuery
+                              .of(context)
+                              .size
+                              .width - videoWidth) / 2;
                     }
 
                     //Начинаем с того же места, где и остановились при смене качества
@@ -274,7 +296,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         child: CircularProgressIndicator(
                           strokeWidth: 4,
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Color(0xFF22A3D2)),
+                          AlwaysStoppedAnimation<Color>(Color(0xFF22A3D2)),
                         ));
                   }
                 }),
@@ -303,7 +325,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
             child: Row(
               children: [
                 InkWell(
-                    //======= Перемотка назад =======//
+                  //======= Перемотка назад =======//
                     child: Container(
                       width: videoWidth * 0.3,
                       height: doubleTapLHeight,
@@ -334,7 +356,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       setState(() {
                         _controller.seekTo(Duration(
                             seconds:
-                                _controller.value.position.inSeconds - 10));
+                            _controller.value.position.inSeconds - 10));
                       });
                     }),
                 Spacer(flex: 1),
@@ -369,7 +391,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       setState(() {
                         _controller.seekTo(Duration(
                             seconds:
-                                _controller.value.position.inSeconds + 10));
+                            _controller.value.position.inSeconds + 10));
                       });
                     }),
               ],
@@ -387,26 +409,28 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
         builder: (BuildContext bc) {
           // Forming the quality list
           final children = <Widget>[];
-          _qualityValues.forEach((quality) => (children.add(new ListTile(
+          _qualityValues.forEach((quality) =>
+          (children.add(new ListTile(
               title: new Text(" ${quality.key.toString()} fps"),
               trailing: _currentResolutionQualityKey == quality.key
                   ? Icon(Icons.check)
                   : null,
-              onTap: () => {
-                    // Update application state and redraw
-                    setState(() {
-                      _controller.pause();
-                      _currentResolutionQualityKey = quality.key;
-                      _qualityValue = quality.value;
-                      _controller =
-                          VideoPlayerController.network(_qualityValue);
-                      _controller.setLooping(looping);
-                      _seek = true;
-                      initFuture = _controller.initialize();
-                      _controller.play();
-                      Navigator.pop(context); //close sheet
-                    }),
-                  }))));
+              onTap: () =>
+              {
+                // Update application state and redraw
+                setState(() {
+                  _controller.pause();
+                  _currentResolutionQualityKey = quality.key;
+                  _qualityValue = quality.value;
+                  _controller =
+                      VideoPlayerController.network(_qualityValue);
+                  _controller.setLooping(looping);
+                  _seek = true;
+                  initFuture = _controller.initialize();
+                  _controller.play();
+                  Navigator.pop(context); //close sheet
+                }),
+              }))));
           // Output quality items as a list
           return Container(
             child: Wrap(
@@ -420,148 +444,161 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   Widget _videoOverlay() {
     return _overlay
         ? Stack(
-            children: <Widget>[
-              GestureDetector(
-                child: Center(
-                  child: Container(
-                    width: videoWidth,
-                    height: videoHeight,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerRight,
-                        end: Alignment.centerLeft,
-                        colors: [
-                          const Color(0x662F2C47),
-                          const Color(0x662F2C47)
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Center(
-                child: IconButton(
-                    padding: EdgeInsets.only(
-                      top: videoHeight / 2 - 50,
-                      bottom: videoHeight / 2 - 30,
-                    ),
-                    icon:
-                        _controller.value.position == _controller.value.duration
-                            ? Icon(
-                                Icons.replay,
-                                color: widget.controlsColor,
-                                size: 60.0,
-                              )
-                            : _controller.value.isPlaying
-                                ? Icon(Icons.pause,
-                                    size: 60.0, color: widget.controlsColor)
-                                : Icon(Icons.play_arrow,
-                                    size: 60.0, color: widget.controlsColor),
-                    onPressed: () {
-                      setState(() {
-                        //replay video
-                        if (_controller.value.position ==
-                            _controller.value.duration) {
-                          setState(() {
-                            _controller.seekTo(Duration());
-                            _controller.play();
-                          });
-                        }
-                        //vanish the overlay if play button is pressed
-                        else if (!_controller.value.isPlaying) {
-                          overlayTimer?.cancel();
-                          _controller.play();
-                          _overlay = !_overlay;
-                        } else {
-                          _controller.pause();
-                        }
-                      });
-                    }),
-              ),
-              //),
-              Container(
-                alignment: Alignment.bottomRight,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: IconButton(
-                    alignment: AlignmentDirectional.center,
-                    icon: Icon(Icons.fullscreen, size: 30.0),
-                    onPressed: () async {
-                      final playing = _controller.value.isPlaying;
-                      setState(() {
-                        _controller.pause();
-                        overlayTimer?.cancel();
-                      });
-                      // Create a new page with a full screen player,
-                      // transfer data to the player and return the position when
-                      // return back. Until we returned from
-                      // fullscreen - the program is pending
-                      position = await Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder: (BuildContext context, _, __) =>
-                                  FullscreenPlayer(
-                                      id: _id,
-                                      autoPlay: true,
-                                      controller: _controller,
-                                      position:
-                                          _controller.value.position.inSeconds,
-                                      initFuture: initFuture,
-                                      qualityValue: _qualityValue),
-                              transitionsBuilder: (___,
-                                  Animation<double> animation,
-                                  ____,
-                                  Widget child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: ScaleTransition(
-                                      scale: animation, child: child),
-                                );
-                              }));
-                      setState(() {
-                        _controller.play();
-                        _seek = true;
-                      });
-                    }),
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: IconButton(
-                    icon: Icon(Icons.settings, size: 26.0),
-                    onPressed: () {
-                      position = _controller.value.position.inSeconds;
-                      _seek = true;
-                      _settingModalBottomSheet(context);
-                      setState(() {});
-                    }),
-              ),
-              Container(
-                // ===== Slider ===== //
-                margin: EdgeInsets.only(top: videoHeight - 56), //CHECK IT
-                child: Center(child: _videoOverlaySlider()),
-              )
-            ],
-          )
-        : Center(
+      children: <Widget>[
+        GestureDetector(
+          child: Center(
             child: Container(
-              height: 5,
               width: videoWidth,
-              margin: EdgeInsets.only(top: videoHeight - 5),
-              child: VideoProgressIndicator(
-                _controller,
-                allowScrubbing: true,
-                colors: VideoProgressColors(
-                  playedColor: Color(0xFF22A3D2),
-                  backgroundColor: Color(0x5515162B),
-                  bufferedColor: Color(0x5583D8F7),
+              height: videoHeight,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
+                  colors: [
+                    const Color(0x662F2C47),
+                    const Color(0x662F2C47)
+                  ],
                 ),
-                padding: EdgeInsets.only(top: 2),
               ),
             ),
-          );
+          ),
+        ),
+        Center(
+          child: IconButton(
+              padding: EdgeInsets.only(
+                top: videoHeight / 2 - 50,
+                bottom: videoHeight / 2 - 30,
+              ),
+              icon:
+              _controller.value.position == _controller.value.duration
+                  ? Icon(
+                Icons.replay,
+                color: widget.controlsColor,
+                size: 60.0,
+              )
+                  : _controller.value.isPlaying
+                  ? Icon(Icons.pause,
+                  size: 60.0, color: widget.controlsColor)
+                  : Icon(Icons.play_arrow,
+                  size: 60.0, color: widget.controlsColor),
+              onPressed: () {
+                setState(() {
+                  //replay video
+                  if (_controller.value.position ==
+                      _controller.value.duration) {
+                    setState(() {
+                      _controller.seekTo(Duration());
+                      _controller.play();
+                    });
+                  }
+                  //vanish the overlay if play button is pressed
+                  else if (!_controller.value.isPlaying) {
+                    overlayTimer?.cancel();
+                    _controller.play();
+                    _overlay = !_overlay;
+                  } else {
+                    _controller.pause();
+                  }
+                });
+              }),
+        ),
+        //),
+        Container(
+          alignment: Alignment.bottomRight,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: IconButton(
+              alignment: AlignmentDirectional.center,
+              icon: Icon(Icons.fullscreen, size: 30.0),
+              onPressed: () async {
+                final playing = _controller.value.isPlaying;
+                setState(() {
+                  _controller.pause();
+                  overlayTimer?.cancel();
+                });
+                // Create a new page with a full screen player,
+                // transfer data to the player and return the position when
+                // return back. Until we returned from
+                // fullscreen - the program is pending
+                position = await Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) =>
+                            FullscreenPlayer(
+                                id: _id,
+                                autoPlay: true,
+                                controller: _controller,
+                                position:
+                                _controller.value.position.inSeconds,
+                                initFuture: initFuture,
+                                qualityValue: _qualityValue),
+                        transitionsBuilder: (___,
+                            Animation<double> animation,
+                            ____,
+                            Widget child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                                scale: animation, child: child),
+                          );
+                        }));
+                setState(() {
+                  _controller.play();
+                  _seek = true;
+                });
+              }),
+        ),
+        Container(
+          alignment: Alignment.topRight,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: IconButton(
+              icon: Icon(Icons.settings, size: 26.0),
+              onPressed: () {
+                position = _controller.value.position.inSeconds;
+                _seek = true;
+                _settingModalBottomSheet(context);
+                setState(() {});
+              }),
+        ),
+        Container(
+          // ===== Slider ===== //
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          margin: EdgeInsets.only(top: videoHeight - 56),
+          //CHECK IT
+          child: Container(width: videoWidth,
+              alignment: Alignment.center,
+              child: _videoOverlaySlider()),
+        )
+      ],
+    )
+        : Center(
+      child: Container(
+        height: 5,
+        width: videoWidth,
+        margin: EdgeInsets.only(top: videoHeight - 5),
+        child: VideoProgressIndicator(
+          _controller,
+          allowScrubbing: true,
+          colors: VideoProgressColors(
+            playedColor: Color(0xFF22A3D2),
+            backgroundColor: Color(0x5515162B),
+            bufferedColor: Color(0x5583D8F7),
+          ),
+          padding: EdgeInsets.only(top: 2),
+        ),
+      ),
+    );
   }
 
   // ==================== SLIDER =================== //
@@ -571,12 +608,16 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
       builder: (context, VideoPlayerValue value, child) {
         if (!value.hasError && value.initialized) {
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                 width: 46,
                 alignment: Alignment(0, 0),
                 child: Text(
-                  '${_twoDigits(value.position.inMinutes)}:${_twoDigits(value.position.inSeconds - value.position.inMinutes * 60)}',
+                  '${_twoDigits(value.position.inMinutes)}:${_twoDigits(
+                      value.position.inSeconds -
+                          value.position.inMinutes * 60)}',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -598,7 +639,9 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                 width: 46,
                 alignment: Alignment(0, 0),
                 child: Text(
-                  '${_twoDigits(value.duration.inMinutes)}:${_twoDigits(value.duration.inSeconds - value.duration.inMinutes * 60)}',
+                  '${_twoDigits(value.duration.inMinutes)}:${_twoDigits(
+                      value.duration.inSeconds -
+                          value.duration.inMinutes * 60)}',
                   style: const TextStyle(
                     color: Colors.white,
                   ),
