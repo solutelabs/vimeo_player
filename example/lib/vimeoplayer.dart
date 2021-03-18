@@ -340,7 +340,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                 ),
               ),
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.bottomRight,
                 width: MediaQuery.of(context).size.width,
                 child: IconButton(
                     alignment: AlignmentDirectional.center,
@@ -389,7 +389,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                 child: _videoOverlaySlider(),
               ),
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.topRight,
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(

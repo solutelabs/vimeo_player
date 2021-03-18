@@ -478,7 +478,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               //),
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.bottomRight,
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
@@ -524,7 +524,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     }),
               ),
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.topRight,
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
@@ -539,7 +539,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               Container(
                 // ===== Slider ===== //
                 margin: EdgeInsets.only(
-                    top: videoHeight - 26, left: videoMargin), //CHECK IT
+                    top: videoHeight - 36, left: videoMargin), //CHECK IT
                 child: _videoOverlaySlider(),
               )
             ],
