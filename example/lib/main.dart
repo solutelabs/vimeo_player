@@ -36,7 +36,12 @@ class VideoScreen extends StatelessWidget {
                 preferredSize: Size(0.0, 0.0),
               ),
         body: ListView(children: <Widget>[
-          VimeoPlayer(id: '395212534', autoPlay: true),
+          VimeoPlayer(
+              id: '475543504', // '395212534',,
+              autoPlay: true,
+              looping: true,
+              availableVideoWidth: MediaQuery.of(context).size.width,
+              availableVideoHeight: 480.0),
         ]));
   }
 }
