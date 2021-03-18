@@ -298,19 +298,20 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
             },
           ),
           Container(
-            color: Colors.red,
             width: videoWidth,
+            height: videoWidth * 0.3,
             child: Row(
               children: [
-                GestureDetector(
-                    //======= Перемотка назад =======//
+                InkWell(
+                  //======= Перемотка назад =======//
                     child: Container(
                       width: videoWidth * 0.3,
                       height: doubleTapLHeight,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(),
                     ),
-
+                    enableFeedback: true,
+                    splashColor: Colors.white12,
                     // Изменение размера блоков дабл тапа. Нужно для открытия кнопок
                     // "Во весь экран" и "Качество" при включенном overlay
                     onTap: () {
@@ -332,18 +333,17 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds:
-                                _controller.value.position.inSeconds - 10));
+                            seconds: _controller.value.position.inSeconds - 10));
                       });
                     }),
                 Spacer(flex: 1),
-                GestureDetector(
+                InkWell(
+                    enableFeedback: true,
+                    splashColor: Colors.white12,
                     child: Container(
                       //======= Перемотка вперед =======//
                       width: videoWidth * 0.3,
                       height: videoHeight,
-                      // margin: EdgeInsets.fromLTRB(doubleTapRWidth / 2 + 45,
-                      //     doubleTapRMargin, 0, doubleTapRMargin + 20),
                       decoration: BoxDecoration(),
                     ),
                     // Изменение размера блоков дабл тапа. Нужно для открытия кнопок
@@ -367,8 +367,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds:
-                                _controller.value.position.inSeconds + 10));
+                            seconds: _controller.value.position.inSeconds + 10));
                       });
                     }),
               ],
