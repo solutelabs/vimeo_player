@@ -303,7 +303,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
             child: Row(
               children: [
                 InkWell(
-                  //======= Перемотка назад =======//
+                    //======= Перемотка назад =======//
                     child: Container(
                       width: videoWidth * 0.3,
                       height: doubleTapLHeight,
@@ -333,7 +333,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds: _controller.value.position.inSeconds - 10));
+                            seconds:
+                                _controller.value.position.inSeconds - 10));
                       });
                     }),
                 Spacer(flex: 1),
@@ -367,7 +368,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     onDoubleTap: () {
                       setState(() {
                         _controller.seekTo(Duration(
-                            seconds: _controller.value.position.inSeconds + 10));
+                            seconds:
+                                _controller.value.position.inSeconds + 10));
                       });
                     }),
               ],
@@ -504,7 +506,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                                       autoPlay: true,
                                       controller: _controller,
                                       position:
-                                      _controller.value.position.inSeconds,
+                                          _controller.value.position.inSeconds,
                                       initFuture: initFuture,
                                       qualityValue: _qualityValue),
                               transitionsBuilder: (___,
@@ -538,9 +540,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               ),
               Container(
                 // ===== Slider ===== //
-                margin: EdgeInsets.only(
-                    top: videoHeight - 36, left: videoMargin), //CHECK IT
-                child: _videoOverlaySlider(),
+                margin: EdgeInsets.only(top: videoHeight - 56), //CHECK IT
+                child: Center(child: _videoOverlaySlider()),
               )
             ],
           )
