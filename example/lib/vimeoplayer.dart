@@ -15,6 +15,7 @@ class VimeoPlayer extends StatefulWidget {
   final int position;
   final double availableVideoWidth;
   final double availableVideoHeight;
+  final Function onVideoCallback;
 
   VimeoPlayer({
     @required this.id,
@@ -23,12 +24,13 @@ class VimeoPlayer extends StatefulWidget {
     this.position,
     this.availableVideoWidth,
     this.availableVideoHeight,
+    this.onVideoCallback,
     Key key,
   }) : super(key: key);
 
   @override
   _VimeoPlayerState createState() =>
-      _VimeoPlayerState(id, autoPlay, looping, position);
+      _VimeoPlayerState(id, autoPlay, looping, position, onVideoCallback);
 }
 
 class _VimeoPlayerState extends State<VimeoPlayer> {
@@ -38,8 +40,10 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   bool _overlay = true;
   bool fullScreen = false;
   int position;
+  Function onVideoCallback;
 
-  _VimeoPlayerState(this._id, this.autoPlay, this.looping, this.position);
+  _VimeoPlayerState(this._id, this.autoPlay, this.looping, this.position,
+      this.onVideoCallback);
 
   //Custom controller
   VideoPlayerController _controller;
@@ -84,6 +88,15 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
       setState(() {
         SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+      });
+
+      /*
+      * Video End Callback
+      * */
+      _controller.addListener(() {
+        if (_controller.value.position == _controller.value.duration) {
+          widget.onVideoCallback.call();
+        }
       });
     });
 
