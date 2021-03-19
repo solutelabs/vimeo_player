@@ -42,7 +42,7 @@ class VideoScreen extends StatelessWidget {
             looping: false,
             availableVideoWidth: MediaQuery.of(context).size.width,
             availableVideoHeight: 480.0,
-            onVideoCallback: () {
+            onVideoCompleted: () {
               print('Video Ended');
             },
           ),
