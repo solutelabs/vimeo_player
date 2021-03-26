@@ -46,10 +46,10 @@ class VideoScreen extends StatelessWidget {
               print('Video Ended');
             },
             videoPlayListener: () {
-              // print('Video Playing');
+              print('Video Playing');
             },
             videoPauseListener: () {
-              // print('Video Paused');
+              print('Video Paused');
             },
           ),
         ]));
