@@ -1,7 +1,6 @@
 library vimeoplayer;
 
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -45,6 +44,7 @@ class VimeoPlayer extends StatefulWidget {
   final Function videoPlayListener;
   final Function videoPauseListener;
   final StreamController<void> pauseVideoController;
+  final VoidCallback onToggleVideoSize;
 
   VimeoPlayer({
     @required this.id,
@@ -63,6 +63,7 @@ class VimeoPlayer extends StatefulWidget {
     this.videoPlayListener,
     this.videoPauseListener,
     this.pauseVideoController,
+    this.onToggleVideoSize,
   })  : this.overlayTimeOut = max(overlayTimeOut, 5),
         super(key: key);
 
@@ -272,7 +273,8 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                       if (diff < 0.0) {
                         // In this case adjust videoMargin
                         videoHeight = widget.availableVideoHeight;
-                        videoWidth = videoWidth * _controller.value.aspectRatio;
+                        videoWidth =
+                            videoHeight * _controller.value.aspectRatio;
                         videoMargin = 0;
                       } else {
                         videoMargin = 0;
@@ -525,6 +527,9 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                     alignment: AlignmentDirectional.center,
                     icon: Icon(Icons.fullscreen, size: 30.0),
                     onPressed: () async {
+                      widget.onToggleVideoSize?.call();
+                      return;
+                      /*
                       final playing = _controller.value.isPlaying;
                       setState(() {
                         _controller.pause();
@@ -561,6 +566,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
                         _controller.play();
                         _seek = true;
                       });
+                      */
                     }),
               ),
               Container(
@@ -579,7 +585,7 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
               Container(
                 // ===== Slider ===== //
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: videoHeight - 56),
+                margin: EdgeInsets.only(top: videoHeight - 70),
                 //CHECK IT
                 child: Container(
                     width: videoWidth,
